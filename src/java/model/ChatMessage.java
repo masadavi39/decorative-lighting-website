@@ -18,4 +18,6 @@ public class ChatMessage {
     public void setSender(String sender) { this.sender = sender; }
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
+
+
 }

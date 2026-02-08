@@ -9,311 +9,202 @@
         <title>Web bán đèn trang trí</title>
         <style>
             :root{
-    --bg-color:#f8f9fa;
-    --text-color:#333;
-    --muted:#556;
-    --card-bg:#fff;
-    --shadow:rgba(0,0,0,0.1);
-    --heading:#2c3e50;
-    --primary:#007bff;      /* xanh dương */
-    --success:#28a745;       /* xanh lá (không dùng cho msg-user nữa) */
-    --danger:#e74c3c;
-    --border:#dcdcdc;
-    --input-bg:#fff;
-    --input-text:#222;
-    --input-border:#cfcfcf;
-    --chip-bg:#eef4ff;
-}
-body.dark{
-    --bg-color:#121416;
-    --text-color:#e9e9e9;
-    --muted:#a7b0c0;
-    --card-bg:#1a1f25;
-    --shadow:rgba(0,0,0,0.4);
-    --heading:#cde1ff;
-    --primary:#4ea3ff;       /* xanh dương cho dark mode */
-    --success:#48d06b;
-    --danger:#ff6b6b;
-    --border:#2b323b;
-    --input-bg:#11161c;
-    --input-text:#e9e9e9;
-    --input-border:#2c3440;
-    --chip-bg:#1e2a38;
-}
+                --bg-color:#f8f9fa;
+                --text-color:#333;
+                --muted:#556;
+                --card-bg:#fff;
+                --shadow:rgba(0,0,0,0.1);
+                --heading:#2c3e50;
+                --primary:#007bff;      /* xanh dương */
+                --success:#28a745;
+                --danger:#e74c3c;
+                --border:#dcdcdc;
+                --input-bg:#fff;
+                --input-text:#222;
+                --input-border:#cfcfcf;
+                --chip-bg:#eef4ff;
+            }
+            body.dark{
+                --bg-color:#121416;
+                --text-color:#e9e9e9;
+                --muted:#a7b0c0;
+                --card-bg:#1a1f25;
+                --shadow:rgba(0,0,0,0.4);
+                --heading:#cde1ff;
+                --primary:#4ea3ff;
+                --success:#48d06b;
+                --danger:#ff6b6b;
+                --border:#2b323b;
+                --input-bg:#11161c;
+                --input-text:#e9e9e9;
+                --input-border:#2c3440;
+                --chip-bg:#1e2a38;
+            }
 
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    background:var(--bg-color);
-    color:var(--text-color);
-    line-height:1.6;
-    transition:background .3s,color .3s;
-}
-.container{max-width:1400px;margin:0 auto;padding:20px}
+            *{margin:0;padding:0;box-sizing:border-box}
+            body{
+                font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+                background:var(--bg-color);
+                color:var(--text-color);
+                line-height:1.6;
+                transition:background .3s,color .3s;
+            }
+            .container{max-width:1400px;margin:0 auto;padding:20px}
 
-/* Banner */
-.banner{width:100%;margin:20px 0;border-radius:12px;overflow:hidden;box-shadow:0 8px 20px var(--shadow)}
-.banner-slider{position:relative;height:400px}
-.slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 1s ease}
-.slide.active{opacity:1}
-.slide img{width:100%;height:400px;object-fit:cover}
-.prev,.next{
-    position:absolute;top:50%;transform:translateY(-50%);
-    background:rgba(0,0,0,.45);color:#fff;border:none;
-    padding:12px 16px;cursor:pointer;font-size:18px;border-radius:10px;
-    transition:background .2s
-}
-.prev:hover,.next:hover{background:rgba(0,0,0,.7)}
-.prev{left:10px} .next{right:10px}
-.banner-thumbs{display:flex;justify-content:center;gap:10px;padding:14px;background:var(--bg-color)}
-.banner-thumbs img{width:80px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;opacity:.6;transition:opacity .2s,transform .2s}
-.banner-thumbs img.active,.banner-thumbs img:hover{opacity:1;transform:translateY(-2px)}
+            /* Banner */
+            .banner{width:100%;margin:20px 0;border-radius:12px;overflow:hidden;box-shadow:0 8px 20px var(--shadow)}
+            .banner-slider{position:relative;height:400px}
+            .slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 1s ease}
+            .slide.active{opacity:1}
+            .slide img{width:100%;height:400px;object-fit:cover}
+            .prev,.next{
+                position:absolute;top:50%;transform:translateY(-50%);
+                background:rgba(0,0,0,.45);color:#fff;border:none;
+                padding:12px 16px;cursor:pointer;font-size:18px;border-radius:10px;
+                transition:background .2s
+            }
+            .prev:hover,.next:hover{background:rgba(0,0,0,.7)}
+            .prev{left:10px} .next{right:10px}
+            .banner-thumbs{display:flex;justify-content:center;gap:10px;padding:14px;background:var(--bg-color)}
+            .banner-thumbs img{width:80px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;opacity:.6;transition:opacity .2s,transform .2s}
+            .banner-thumbs img.active,.banner-thumbs img:hover{opacity:1;transform:translateY(-2px)}
 
-/* Layout */
-.main-content{display:flex;gap:30px;margin-top:30px}
-.products-section{flex:3}
-.sidebar{flex:1;display:flex;flex-direction:column;gap:20px}
+            /* Layout */
+            .main-content{display:flex;gap:30px;margin-top:30px}
+            .products-section{flex:3}
+            .sidebar{flex:1;display:flex;flex-direction:column;gap:20px}
 
-/* Cards */
-.bestseller-box,.search-box{
-    background:var(--card-bg);padding:20px;border-radius:14px;
-    box-shadow:0 6px 16px var(--shadow);border:1px solid var(--border)
-}
-h2{color:var(--heading);text-align:center;margin-bottom:22px;font-size:2rem}
-h3{color:var(--heading);margin-bottom:14px;text-align:left}
+            /* Cards */
+            .bestseller-box,.search-box{
+                background:var(--card-bg);padding:20px;border-radius:14px;
+                box-shadow:0 6px 16px var(--shadow);border:1px solid var(--border)
+            }
+            h2{color:var(--heading);text-align:center;margin-bottom:22px;font-size:2rem}
+            h3{color:var(--heading);margin-bottom:14px;text-align:left}
 
-/* Sort */
-.products-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px;flex-wrap:wrap}
-.sort-form{
-    display:flex;align-items:center;gap:8px;background:var(--card-bg);
-    padding:6px 10px;border-radius:10px;box-shadow:0 4px 10px var(--shadow);border:1px solid var(--border)
-}
-.sort-form label{font-weight:600;font-size:.95rem}
-.sort-form select{
-    padding:10px 12px;border-radius:8px;border:1px solid var(--input-border);
-    background:var(--input-bg);color:var(--input-text);cursor:pointer;font-size:.95rem;
-    transition:border-color .2s,box-shadow .2s;appearance:none;
-    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-    background-repeat:no-repeat;background-position:right 12px center;padding-right:32px
-}
-.sort-form select:hover{border-color:var(--primary)}
+            /* Sort */
+            .products-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px;flex-wrap:wrap}
+            .sort-form{
+                display:flex;align-items:center;gap:8px;background:var(--card-bg);
+                padding:6px 10px;border-radius:10px;box-shadow:0 4px 10px var(--shadow);border:1px solid var(--border)
+            }
+            .sort-form label{font-weight:600;font-size:.95rem}
+            .sort-form select{
+                padding:10px 12px;border-radius:8px;border:1px solid var(--input-border);
+                background:var(--input-bg);color:var(--input-text);cursor:pointer;font-size:.95rem;
+                transition:border-color .2s,box-shadow .2s;appearance:none;
+                background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+                background-repeat:no-repeat;background-position:right 12px center;padding-right:32px
+            }
+            .sort-form select:hover{border-color:var(--primary)}
 
-/* Grid */
-.product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:30px}
-.product-card{
-    background:var(--card-bg);border-radius:14px;padding:16px;text-align:center;
-    box-shadow:0 6px 16px var(--shadow);transition:transform .2s,border-color .2s;
-    border:1px solid var(--border);display:flex;flex-direction:column
-}
-.product-card:hover{transform:translateY(-4px)}
-.product-card a img{width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;display:block}
-.product-card h3{font-size:1.06rem;margin-bottom:6px;color:var(--text-color)}
-.product-card .price{color:var(--primary);font-weight:700;font-size:1.06rem;margin-bottom:6px}
-.product-card .button:not(.secondary){margin-top:auto;margin-bottom:0}
-.stock{font-size:.9rem;margin-bottom:10px;color:var(--muted)}
-.stock.in{color:var(--success)} .stock.out{color:var(--danger)}
+            /* Grid */
+            .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:30px}
+            .product-card{
+                background:var(--card-bg);border-radius:14px;padding:16px;text-align:center;
+                box-shadow:0 6px 16px var(--shadow);transition:transform .2s,border-color .2s;
+                border:1px solid var(--border);display:flex;flex-direction:column
+            }
+            .product-card:hover{transform:translateY(-4px)}
+            .product-card a img{width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;display:block}
+            .product-card h3{font-size:1.06rem;margin-bottom:6px;color:var(--text-color)}
+            .product-card .price{color:var(--primary);font-weight:700;font-size:1.06rem;margin-bottom:6px}
+            .product-card .button:not(.secondary){margin-top:auto;margin-bottom:0}
+            .stock{font-size:.9rem;margin-bottom:10px;color:var(--muted)}
+            .stock.in{color:var(--success)} .stock.out{color:var(--danger)}
 
-/* Buttons */
-.button{
-    background:var(--primary);color:#fff;border:none;padding:10px 16px;
-    border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;
-    margin:5px;transition:transform .15s,opacity .2s,filter .2s
-}
-.button:hover{transform:translateY(-2px);filter:brightness(0.98)}
-.button.secondary{background:#6c757d}
-.button.secondary:hover{opacity:.92}
+            /* Buttons */
+            .button{
+                background:var(--primary);color:#fff;border:none;padding:10px 16px;
+                border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;
+                margin:5px;transition:transform .15s,opacity .2s,filter .2s
+            }
+            .button:hover{transform:translateY(-2px);filter:brightness(0.98)}
+            .button.secondary{background:#6c757d}
+            .button.secondary:hover{opacity:.92}
 
-/* Pagination */
-.pagination{text-align:center;margin:24px 0}
-.pagination .button{margin:0 2px}
-.pagination .button.active{background:#28a745}
-.pagination input{
-    width:70px;padding:8px;border-radius:8px;border:1px solid var(--input-border);
-    background:var(--input-bg);color:var(--input-text)
-}
+            /* Pagination */
+            .pagination{text-align:center;margin:24px 0}
+            .pagination .button{margin:0 2px}
+            .pagination .button.active{background:#28a745}
+            .pagination input{
+                width:70px;padding:8px;border-radius:8px;border:1px solid var(--input-border);
+                background:var(--input-bg);color:var(--input-text)
+            }
 
-/* Theme toggle */
-.theme-toggle{
-    position:fixed;bottom:20px;right:20px;background:#ffc107;color:#000;
-    border:none;padding:10px 15px;border-radius:12px;cursor:pointer;font-weight:700;
-    box-shadow:0 4px 12px var(--shadow);z-index:999
-}
-.theme-toggle:hover{filter:brightness(.95)}
+            /* Theme toggle */
+            .theme-toggle{
+                position:fixed;bottom:20px;right:20px;background:#ffc107;color:#000;
+                border:none;padding:10px 15px;border-radius:12px;cursor:pointer;font-weight:700;
+                box-shadow:0 4px 12px var(--shadow);z-index:999
+            }
+            .theme-toggle:hover{filter:brightness(.95)}
 
-/* Advanced search */
-.search-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.adv-toggle{
-    background:transparent;border:1px solid var(--border);color:var(--text-color);
-    padding:8px 12px;border-radius:10px;cursor:pointer;transition:border-color .2s
-}
-.adv-toggle:hover{border-color:var(--primary)}
-.adv-body{overflow:hidden;max-height:0;transition:max-height .35s ease,padding .25s ease}
-.adv-body.open{max-height:600px;padding-top:12px}
-.form-grid{display:grid;grid-template-columns:1fr;gap:15px}
-.form-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:15px}
-.form-row.price-group{grid-template-columns:1fr}
-.form-row.price-group label{grid-column:1 / -1;margin-bottom:-5px;font-weight:700}
-.form-row input,.form-row select{
-    width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--input-border);
-    background:var(--input-bg);color:var(--input-text);outline:none;
-    transition:border-color .2s,box-shadow .2s;appearance:none;
-    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-    background-repeat:no-repeat;background-position:right 12px center;padding-right:34px
-}
-.form-row input:focus,.form-row select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,123,255,.25)}
-body.dark .form-row input:focus,body.dark .form-row select:focus{box-shadow:0 0 0 3px rgba(78,163,255,.4)}
-.price-inputs{display:flex;flex-direction:column;gap:10px}
-.price-input-row{display:flex;align-items:center;gap:10px}
-.price-input-row span{font-weight:600;color:var(--text-color);width:50px;flex-shrink:0}
-.search-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
+            /* Advanced search */
+            .search-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+            .adv-toggle{
+                background:transparent;border:1px solid var(--border);color:var(--text-color);
+                padding:8px 12px;border-radius:10px;cursor:pointer;transition:border-color .2s
+            }
+            .adv-toggle:hover{border-color:var(--primary)}
+            .adv-body{overflow:hidden;max-height:0;transition:max-height .35s ease,padding .25s ease}
+            .adv-body.open{max-height:600px;padding-top:12px}
+            .form-grid{display:grid;grid-template-columns:1fr;gap:15px}
+            .form-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:15px}
+            .form-row.price-group{grid-template-columns:1fr}
+            .form-row.price-group label{grid-column:1 / -1;margin-bottom:-5px;font-weight:700}
+            .form-row input,.form-row select{
+                width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--input-border);
+                background:var(--input-bg);color:var(--input-text);outline:none;
+                transition:border-color .2s,box-shadow .2s;appearance:none;
+                background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+                background-repeat:no-repeat;background-position:right 12px center;padding-right:34px
+            }
+            .form-row input:focus,.form-row select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,123,255,.25)}
+            body.dark .form-row input:focus,body.dark .form-row select:focus{box-shadow:0 0 0 3px rgba(78,163,255,.4)}
+            .price-inputs{display:flex;flex-direction:column;gap:10px}
+            .price-input-row{display:flex;align-items:center;gap:10px}
+            .price-input-row span{font-weight:600;color:var(--text-color);width:50px;flex-shrink:0}
+            .search-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
 
-@media (max-width:992px){
-    .product-grid{grid-template-columns:repeat(2,1fr)}
-    .sidebar{flex:1}
-}
-@media (max-width:576px){
-    .product-grid{grid-template-columns:1fr}
-    .form-row{grid-template-columns:1fr;gap:8px}
-    .form-row.price-group{grid-template-columns:1fr}
-}
+            @media (max-width:992px){
+                .product-grid{grid-template-columns:repeat(2,1fr)}
+                .sidebar{flex:1}
+            }
+            @media (max-width:576px){
+                .product-grid{grid-template-columns:1fr}
+                .form-row{grid-template-columns:1fr;gap:8px}
+                .form-row.price-group{grid-template-columns:1fr}
+            }
 
-/* Success popup */
-.success-form{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:9999}
-.success-form.active{display:flex}
-.success-form .content-container{
-    background:var(--card-bg);color:var(--text-color);padding:28px 36px;border-radius:16px;
-    box-shadow:0 16px 40px rgba(0,0,0,.30);max-width:520px;width:calc(100% - 40px);
-    text-align:center;transform:translateY(10px) scale(.96);opacity:0;
-    transition:transform .3s cubic-bezier(.19,.71,.27,1),opacity .3s ease;
-}
-.success-form.active .content-container{transform:translateY(0) scale(1);opacity:1;}
-.success-icon{width:72px;height:72px;margin:0 auto 16px;display:block}
-.success-icon circle,.success-icon path{stroke:var(--primary)}
-.success-text{font-size:1.05rem;font-weight:700}
-.success-icon.spin-once{animation:icon-spin-once .6s cubic-bezier(.22,.8,.35,1.01);transform-origin:50% 50%;}
-@keyframes icon-spin-once{
-    0%{transform:rotate(-180deg) scale(.85);opacity:.35}
-    50%{opacity:1}
-    100%{transform:rotate(0) scale(1);opacity:1}
-}
+            /* Success popup */
+            .success-form{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:9999}
+            .success-form.active{display:flex}
+            .success-form .content-container{
+                background:var(--card-bg);color:var(--text-color);padding:28px 36px;border-radius:16px;
+                box-shadow:0 16px 40px rgba(0,0,0,.30);max-width:520px;width:calc(100% - 40px);
+                text-align:center;transform:translateY(10px) scale(.96);opacity:0;
+                transition:transform .3s cubic-bezier(.19,.71,.27,1),opacity .3s ease;
+            }
+            .success-form.active .content-container{transform:translateY(0) scale(1);opacity:1;}
+            .success-icon{width:72px;height:72px;margin:0 auto 16px;display:block}
+            .success-icon circle,.success-icon path{stroke:var(--primary)}
+            .success-text{font-size:1.05rem;font-weight:700}
+            .success-icon.spin-once{animation:icon-spin-once .6s cubic-bezier(.22,.8,.35,1.01);transform-origin:50% 50%;}
+            @keyframes icon-spin-once{
+                0%{transform:rotate(-180deg) scale(.85);opacity:.35}
+                50%{opacity:1}
+                100%{transform:rotate(0) scale(1);opacity:1}
+            }
 
-.promo-section div h4{color:var(--primary);font-size:1.1rem;margin-bottom:6px}
-.promo-section div p{font-size:.95rem;color:var(--text-color)}
-
-/* === CHAT WIDGET START === */
-#chatToggleBtn{
-    position:fixed;bottom:100px;right:20px;
-    width:58px;height:58px;border-radius:50%;
-    background:var(--primary);color:#fff;border:none;
-    box-shadow:0 6px 18px rgba(0,0,0,.25);
-    cursor:pointer;font-size:22px;display:flex;
-    align-items:center;justify-content:center;
-    z-index:998;transition:background .25s,transform .25s;
-}
-#chatToggleBtn:hover{background:#0056c7;transform:translateY(-3px)}
-body.dark #chatToggleBtn{background:#4ea3ff}
-body.dark #chatToggleBtn:hover{background:#2e8adf}
-
-#chatWidget{
-    position:fixed;bottom:170px;right:20px;
-    width:340px;max-height:520px;
-    display:none;flex-direction:column;
-    background:var(--card-bg);border:1px solid var(--border);
-    border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.3);
-    z-index:999;overflow:hidden;
-}
-#chatWidget.active{display:flex}
-.chat-header{
-    padding:12px 16px;background:var(--primary);color:#fff;
-    display:flex;align-items:center;justify-content:space-between;
-}
-body.dark .chat-header{background:#4ea3ff}
-.chat-header h4{margin:0;font-size:1rem;font-weight:600;display:flex;align-items:center;gap:6px}
-.chat-messages{
-    flex:1;padding:12px 14px;overflow-y:auto;
-    display:flex;flex-direction:column;gap:8px;
-    background:var(--bg-color);
-    align-items:flex-start; /* căn trái mặc định */
-}
-.chat-input-area{
-    padding:10px 12px;background:var(--card-bg);
-    border-top:1px solid var(--border);display:flex;gap:8px
-}
-.chat-input-area input{
-    flex:1;padding:10px 12px;border-radius:10px;
-    border:1px solid var(--input-border);background:var(--input-bg);
-    color:var(--input-text);outline:none;
-}
-.chat-input-area input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,123,255,.25)}
-body.dark .chat-input-area input:focus{box-shadow:0 0 0 3px rgba(78,163,255,.45)}
-.chat-input-area button{
-    background:var(--primary);color:#fff;border:none;
-    padding:0 16px;border-radius:10px;cursor:pointer;font-weight:600;
-    transition:background .25s
-}
-.chat-input-area button:hover{background:#0056c7}
-body.dark .chat-input-area button{background:#4ea3ff}
-body.dark .chat-input-area button:hover{background:#2e8adf}
-
-.msg-bubble{
-    max-width:75%;padding:8px 12px;border-radius:14px;
-    font-size:.87rem;line-height:1.4;position:relative;
-    white-space:pre-wrap;word-break:break-word;
-    box-shadow:0 2px 6px rgba(0,0,0,.15);
-    animation:msgFade .25s ease;
-}
-@keyframes msgFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-/* Bạn gửi (USER): xanh dương, bên phải */
-.msg-user{
-    align-self:flex-end;
-    background:var(--primary);  /* đổi sang xanh dương giống admin */
-    color:#fff;
-    border-bottom-right-radius:6px;
-}
-
-/* Admin gửi đến (ADMIN): xám, bên trái */
-.msg-admin{
-    align-self:flex-start;
-    background:#e9ecef;
-    color:#1f2937;
-    border:1px solid #e5e7eb;
-    border-bottom-left-radius:6px;
-}
-
-/* Dark mode */
-body.dark .msg-user{
-    background:var(--primary); /* #4ea3ff */
-    color:#fff;
-}
-body.dark .msg-admin{
-    background:#2b323b;
-    color:#e9e9e9;
-    border:1px solid var(--border);
-}
-
-.chat-empty{
-    text-align:center;font-size:.85rem;color:var(--muted);
-    padding:12px 8px
-}
-.chat-close-btn{
-    background:transparent;border:none;color:#fff;
-    font-size:18px;cursor:pointer;line-height:1;
-}
-.chat-status{
-    font-size:.65rem;font-weight:500;
-    background:#ffc107;color:#222;padding:2px 6px;
-    border-radius:10px;margin-left:6px;
-}
-body.dark .chat-status{background:#664d00;color:#ffd666}
-/* === CHAT WIDGET END === */
+            .promo-section div h4{color:var(--primary);font-size:1.1rem;margin-bottom:6px}
+            .promo-section div p{font-size:.95rem;color:var(--text-color)}
         </style>
     </head>
     <body>
         <%@ include file="partials/header.jsp" %>
 
         <div class="container">
-            <!-- Banner -->
             <div class="banner">
                 <div class="banner-slider">
                     <div class="slide active"><img src="${pageContext.request.contextPath}/images/banner1.jpg" alt="Banner 1" width="1600" height="400" loading="eager"></div>
@@ -328,7 +219,6 @@ body.dark .chat-status{background:#664d00;color:#ffd666}
                     <img src="${pageContext.request.contextPath}/images/banner3.jpg" class="thumb" alt="Thumb 3">
                 </div>
             </div>
-            <!-- Promo Section -->
             <div class="promo-section" style="margin-bottom:25px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
                 <div style="flex:1;min-width:200px;background:var(--chip-bg);padding:20px;border-radius:14px;text-align:center;box-shadow:0 6px 16px var(--shadow);">
                     <h4 style="margin-bottom:10px;">🚚 Miễn phí giao hàng</h4><p>Cho đơn hàng từ 1.000.000₫ trở lên</p>
@@ -399,6 +289,7 @@ body.dark .chat-status{background:#664d00;color:#ffd666}
                             <c:param name="sortBy" value="${param.sortBy}"/>
                         </c:if>
                     </c:url>
+                    
                     <div class="pagination">
                         <c:if test="${currentPage > 1}">
                             <a href="${pagingUrl}&page=1" class="button">« Đầu</a>
@@ -500,9 +391,6 @@ body.dark .chat-status{background:#664d00;color:#ffd666}
             </div>
         </c:if>
 
-        <%@ include file="partials/footer.jsp" %>
-
-        <!-- POPUP GIỎ -->
         <div id="successPopup" class="success-form" aria-hidden="true">
             <div class="content-container" role="dialog" aria-modal="true" aria-live="assertive">
                 <svg class="success-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -513,23 +401,9 @@ body.dark .chat-status{background:#664d00;color:#ffd666}
             </div>
         </div>
 
-        <!-- === CHAT WIDGET MARKUP === -->
-        <button id="chatToggleBtn" type="button" aria-label="Mở chat">💬</button>
-        <div id="chatWidget" aria-live="polite" aria-label="Hỗ trợ chat">
-            <div class="chat-header">
-                <h4>Hỗ trợ <span class="chat-status">ONLINE</span></h4>
-                <button class="chat-close-btn" type="button" aria-label="Đóng">×</button>
-            </div>
-            <div id="chatMessages" class="chat-messages">
-                <div class="chat-empty">Chào bạn! Gửi tin nhắn để bắt đầu hỗ trợ.</div>
-            </div>
-            <div class="chat-input-area">
-                <input id="chatInput" type="text" placeholder="Nhập tin nhắn..." maxlength="500" aria-label="Nội dung tin nhắn">
-                <button id="chatSendBtn" type="button">Gửi</button>
-            </div>
-        </div>
-        <!-- === END CHAT WIDGET === -->
+        <%@ include file="partials/footer.jsp" %>
 
+        <%@ include file="chat_widget.jsp" %>
         <script>
             /* Banner logic */
             const slides = document.querySelectorAll('.slide');
@@ -577,217 +451,83 @@ body.dark .chat-status{background:#664d00;color:#ffd666}
                 setAdv(open);
                 localStorage.setItem('adv_open', open ? 'true' : 'false');
             });
-
+            
             /* Popup giỏ hàng */
-  const successPopup = document.getElementById('successPopup');
-  let popupTimer = null;
+            const successPopup = document.getElementById('successPopup');
+            let popupTimer = null;
+            // Bật lại reload sau khi đóng popup (mặc định: true)
+            function showSuccessPopup({message='Thêm sản phẩm vào giỏ hàng thành công !',duration=1200,reloadAfter=true,spin=true}={}) {
+                if(!successPopup) return;
+                const textEl = successPopup.querySelector('.success-text');
+                if(textEl) textEl.textContent = message;
+                const icon = successPopup.querySelector('.success-icon');
+                if(icon){
+                    icon.classList.remove('spin-once');
+                    if(spin){ void icon.offsetWidth; icon.classList.add('spin-once'); }
+                }
+                clearTimeout(popupTimer);
+                successPopup.classList.add('active');
+                successPopup.style.display='flex';
+                successPopup.setAttribute('aria-hidden','false');
+                document.body.style.overflow='hidden';
+                popupTimer = setTimeout(()=>closeSuccessPopup(reloadAfter), duration);
+                function onOverlay(e){ if(e.target===successPopup){ cleanup(); closeSuccessPopup(reloadAfter); } }
+                function onEsc(e){ if(e.key==='Escape'){ cleanup(); closeSuccessPopup(reloadAfter); } }
+                function cleanup(){
+                    successPopup.removeEventListener('click',onOverlay);
+                    document.removeEventListener('keydown',onEsc);
+                    clearTimeout(popupTimer);
+                }
+                successPopup.addEventListener('click',onOverlay,{once:true});
+                document.addEventListener('keydown',onEsc,{once:true});
+            }
+            function closeSuccessPopup(reload=false){
+                successPopup.classList.remove('active');
+                successPopup.style.display='none';
+                successPopup.setAttribute('aria-hidden','true');
+                document.body.style.overflow='';
+                if(reload) location.reload();
+            }
 
-  // Bật lại reload sau khi đóng popup (mặc định: true)
-  function showSuccessPopup({message='Thêm sản phẩm vào giỏ hàng thành công !',duration=1200,reloadAfter=true,spin=true}={}) {
-      if(!successPopup) return;
-      const textEl = successPopup.querySelector('.success-text');
-      if(textEl) textEl.textContent = message;
-      const icon = successPopup.querySelector('.success-icon');
-      if(icon){
-          icon.classList.remove('spin-once');
-          if(spin){ void icon.offsetWidth; icon.classList.add('spin-once'); }
-      }
-      clearTimeout(popupTimer);
-      successPopup.classList.add('active');
-      successPopup.style.display='flex';
-      successPopup.setAttribute('aria-hidden','false');
-      document.body.style.overflow='hidden';
-      popupTimer = setTimeout(()=>closeSuccessPopup(reloadAfter), duration);
-      function onOverlay(e){ if(e.target===successPopup){ cleanup(); closeSuccessPopup(reloadAfter); } }
-      function onEsc(e){ if(e.key==='Escape'){ cleanup(); closeSuccessPopup(reloadAfter); } }
-      function cleanup(){
-          successPopup.removeEventListener('click',onOverlay);
-          document.removeEventListener('keydown',onEsc);
-          clearTimeout(popupTimer);
-      }
-      successPopup.addEventListener('click',onOverlay,{once:true});
-      document.addEventListener('keydown',onEsc,{once:true});
-  }
-  function closeSuccessPopup(reload=false){
-      successPopup.classList.remove('active');
-      successPopup.style.display='none';
-      successPopup.setAttribute('aria-hidden','true');
-      document.body.style.overflow='';
-      if(reload) location.reload();
-  }
+            /* Add to cart AJAX */
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                    btn.addEventListener('click', async function (e) {
+                        e.preventDefault();
+                        const id = this.dataset.productId;
+                        if (this.disabled) return;
+                        
+                        const originalText = this.textContent;
+                        this.disabled = true; this.style.opacity = '.7';
 
-  /* Add to cart AJAX */
-  document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-          btn.addEventListener('click', async function (e) {
-              e.preventDefault();
-              const id = this.dataset.productId;
-              if (this.disabled) return;
-              const originalText = this.textContent;
-              this.disabled = true; this.style.opacity = '.7';
-
-              try {
-                  const res = await fetch('${pageContext.request.contextPath}/cart', {
-                      method:'POST',
-                      headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'},
-                      body:new URLSearchParams({action:'add',productId:id,quantity:1})
-                  });
-                  const result = await res.json();
-                  if(result.success){
-                      // Gọi popup và reload lại trang để cart cập nhật
-                      showSuccessPopup({reloadAfter:true,duration:1200,spin:true});
-                      this.textContent='✅ Đã thêm'; this.style.backgroundColor='var(--success)';
-                      setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
-                  }else{
-                      this.textContent='❌ Lỗi'; this.style.backgroundColor='var(--danger)';
-                      setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
-                  }
-              } catch(err){
-                  console.error(err);
-                  this.textContent='❌ Lỗi mạng'; this.style.backgroundColor='var(--danger)';
-                  setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
-              } finally {
-                  this.disabled=false; this.style.opacity='';
-              }
-          });
-      });
-  });
-
-            /* === CHAT WIDGET SCRIPT (FIX COMPOSITION/ENTER) === */
-  const chatToggleBtn = document.getElementById('chatToggleBtn');
-  const chatWidget = document.getElementById('chatWidget');
-  const chatCloseBtn = chatWidget.querySelector('.chat-close-btn');
-  const chatMessagesEl = document.getElementById('chatMessages');
-  const chatInput = document.getElementById('chatInput');
-  const chatSendBtn = document.getElementById('chatSendBtn');
-  const CHAT_API = '${pageContext.request.contextPath}/chat-api';
-
-  let pollingTimer = null;
-  let isSending = false;
-  let lastRenderedCount = 0;
-  let isComposing = false; // NEW: track IME composition state
-
-  function appendMessage(sender, content){
-      if(!chatMessagesEl) return;
-      const div = document.createElement('div');
-      div.className = 'msg-bubble ' + (sender === 'ADMIN' ? 'msg-admin' : 'msg-user');
-      div.textContent = content;
-      chatMessagesEl.appendChild(div);
-      chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
-  }
-
-  function renderHistoryIncremental(list){
-      if(!list || list.length === 0){
-          if (chatMessagesEl.innerHTML.trim() === '') {
-              chatMessagesEl.innerHTML = '<div class="chat-empty">Chưa có tin nhắn nào, hãy bắt đầu cuộc trò chuyện.</div>';
-          }
-          lastRenderedCount = 0;
-          return;
-      }
-      if (chatMessagesEl.querySelector('.chat-empty')) {
-          chatMessagesEl.innerHTML = '';
-      }
-      for (let i = lastRenderedCount; i < list.length; i++) {
-          const msg = list[i];
-          appendMessage(msg.sender, msg.content);
-      }
-      lastRenderedCount = list.length;
-  }
-
-  async function loadHistory(){
-      try{
-          const res = await fetch(CHAT_API, {cache:'no-store'});
-          if(!res.ok) return;
-          const data = await res.json();
-          renderHistoryIncremental(data);
-      }catch(e){
-          console.warn('Load chat error', e);
-      }
-  }
-
-  async function sendMessage(){
-      if(isSending) return;
-      // NEW: nếu đang composition (gõ IME), không gửi
-      if (isComposing) return;
-
-      const text = (chatInput.value || '').trim();
-      if(!text) return;
-
-      isSending = true;
-      chatSendBtn.disabled = true;
-      chatInput.disabled = true;
-
-      try{
-          // Hiển thị ngay tin nhắn của USER
-          appendMessage('USER', text);
-          // KHÔNG tăng lastRenderedCount thủ công nữa để tránh lệch với server
-          chatInput.value = ''; // clear sau khi đã lấy text ổn định
-
-          const res = await fetch(CHAT_API, {
-              method:'POST',
-              headers:{'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'},
-              body:new URLSearchParams({action:'send',content:text})
-          });
-          // Sau khi gửi, chờ một chút rồi đồng bộ lịch sử
-          setTimeout(loadHistory, 300);
-      }catch(e){
-          console.error(e);
-      }finally{
-          isSending = false;
-          chatSendBtn.disabled = false;
-          chatInput.disabled = false;
-          chatInput.focus();
-      }
-  }
-
-  function startPolling(){
-      stopPolling();
-      pollingTimer = setInterval(loadHistory, 2000);
-  }
-  function stopPolling(){
-      if(pollingTimer){
-          clearInterval(pollingTimer);
-          pollingTimer = null;
-      }
-  }
-
-  chatToggleBtn.addEventListener('click', () => {
-      const active = chatWidget.classList.toggle('active');
-      if(active){
-          loadHistory();
-          startPolling();
-          chatInput.focus();
-      }else{
-          stopPolling();
-      }
-  });
-  chatCloseBtn.addEventListener('click', () => {
-      chatWidget.classList.remove('active');
-      stopPolling();
-  });
-  chatSendBtn.addEventListener('click', sendMessage);
-
-  // NEW: quản lý IME composition để tránh mất ký tự đầu tiên
-  chatInput.addEventListener('compositionstart', () => { isComposing = true; });
-  chatInput.addEventListener('compositionend', () => { isComposing = false; });
-
-  chatInput.addEventListener('keydown', e => {
-      // Chỉ xử lý Enter khi KHÔNG composition
-      if(e.key === 'Enter' && !isComposing) {
-          e.preventDefault();
-          sendMessage();
-      }
-  });
-
-  // Tự động mở chat nếu URL có ?chat=open
-  if (new URLSearchParams(location.search).get('chat') === 'open'){
-      chatWidget.classList.add('active');
-      loadHistory(); startPolling();
-  }
-
-  // Dọn dẹp khi unload
-  window.addEventListener('beforeunload', stopPolling);
-  /* === END CHAT WIDGET SCRIPT === */
+                        try {
+                            const res = await fetch('${pageContext.request.contextPath}/cart', {
+                                method:'POST',
+                                headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'},
+                                body:new URLSearchParams({action:'add',productId:id,quantity:1})
+                            });
+                            const result = await res.json();
+                            if(result.success){
+                                // Gọi popup và reload lại trang để cart cập nhật
+                                showSuccessPopup({reloadAfter:true,duration:1200,spin:true});
+                                this.textContent='✅ Đã thêm'; this.style.backgroundColor='var(--success)';
+                                setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
+                            }else{
+                                this.textContent='❌ Lỗi';
+                                this.style.backgroundColor='var(--danger)';
+                                setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
+                            }
+                        } catch(err){
+                            console.error(err);
+                            this.textContent='❌ Lỗi mạng'; this.style.backgroundColor='var(--danger)';
+                            setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
+                        } finally {
+                            this.disabled=false;
+                            this.style.opacity='';
+                        }
+                    });
+                });
+            });
         </script>
     </body>
 </html>
