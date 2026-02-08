@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  web.xml tối giản: để tránh xung đột do trùng mapping, ta dùng URL mapping từ @WebServlet trong code.
+  Bạn KHÔNG cần khai báo <servlet> / <servlet-mapping> ở đây nữa cho các servlet đã có @WebServlet.
+  Những phần dưới đã được giữ lại:
+    - CharacterEncodingFilter (bộ lọc UTF-8) áp dụng cho mọi request/forward/include/error
+    - jsp-config (thiết lập encoding JSP)
+    - welcome-file (điểm vào mặc định)
+  Nếu muốn quản lý mapping tập trung trong web.xml (thay vì annotation), hãy:
+    1) Bỏ hoặc comment @WebServlet trong các lớp Servlet
+    2) Bỏ comment khối “MẪU CẤU HÌNH MAPPING TRONG WEB.XML” ở cuối file này
+-->
+<web-app version="6.0"
+         xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+
+    <display-name>LightWebProject</display-name>
+
+    <!-- ===============================================================
+         FILTERS
+         =============================================================== -->
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>INCLUDE</dispatcher>
+        <dispatcher>ERROR</dispatcher>
+    </filter-mapping>
+
+    <!-- ===============================================================
+         JSP CONFIG
+         =============================================================== -->
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <page-encoding>UTF-8</page-encoding>
+        </jsp-property-group>
+    </jsp-config>
+
+    <!-- ===============================================================
+         WELCOME FILE
+         - Chuyển truy cập gốc "/" tới ProductServlet (@WebServlet "/products")
+         =============================================================== -->
+    <welcome-file-list>
+        <welcome-file>products</welcome-file>
+    </welcome-file-list>
+
+    <!-- ===============================================================
+         GHI CHÚ QUAN TRỌNG
+         - Tất cả servlet trong dự án đang dùng @WebServlet (annotation) để định nghĩa URL.
+         - Việc lặp lại <servlet> / <servlet-mapping> ở đây sẽ gây báo lỗi trùng mapping hoặc hành vi khó đoán.
+         - Vì thế, KHÔNG khai báo lại các servlet/mapping ở web.xml.
+         - Các lớp đang có @WebServlet trong code (tham khảo):
+             + controller.ProductServlet           -> /products
+             + controller.AuthServlet              -> /auth
+             + controller.CartServlet              -> /cart
+             + controller.PaymentServlet           -> /payment
+             + controller.ProfileServlet           -> /profile
+             + controller.ChatServlet              -> /chat-api
+             + controller.AdminProductServlet      -> /admin/products
+             + controller.AdminCouponServlet       -> /admin/coupons
+             + controller.AdminFeedbackServlet     -> /admin/feedbacks
+             + controller.AdminDashboardServlet    -> /admin/dashboard
+             + controller.AdminChatServlet         -> /admin/chat
+             + controller.AdminReviewServlet       -> /admin/reviews
+             + controller.AccountServlet           -> /admin/account
+             + controller.AdminCustomerServlet     -> /admin/customers
+             + controller.OrderServlet             -> /orders
+             + controller.ReviewsServlet           -> /reviews
+             + controller.QuoteServlet             -> /quote/*
+             + controller.InvoiceServlet           -> /invoice/print
+         - Lưu ý: InvoiceServlet forward tới /WEB-INF/views/invoice_print.jsp (OK vì forward nội bộ).
+         =============================================================== -->
+
+    <!-- ===============================================================
+         MẪU CẤU HÌNH MAPPING TRONG WEB.XML (CHỈ DÙNG KHI KHÔNG DÙNG @WebServlet)
+         → Nếu muốn chuyển về quản lý mapping bằng web.xml:
+            1) XÓA hoặc COMMENT annotation @WebServlet trong các servlet tương ứng
+            2) BỎ COMMENT các khối dưới đây
+         ===============================================================
+    <servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>controller.ProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>controller.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>controller.CartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-class>controller.PaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet</servlet-name>
+        <url-pattern>/payment</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>controller.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/profile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ChatServlet</servlet-name>
+        <servlet-class>controller.ChatServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChatServlet</servlet-name>
+        <url-pattern>/chat-api</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminProductServlet</servlet-name>
+        <servlet-class>controller.AdminProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminProductServlet</servlet-name>
+        <url-pattern>/admin/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminCouponServlet</servlet-name>
+        <servlet-class>controller.AdminCouponServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminCouponServlet</servlet-name>
+        <url-pattern>/admin/coupons</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminFeedbackServlet</servlet-name>
+        <servlet-class>controller.AdminFeedbackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminFeedbackServlet</servlet-name>
+        <url-pattern>/admin/feedbacks</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>controller.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminChatServlet</servlet-name>
+        <servlet-class>controller.AdminChatServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminChatServlet</servlet-name>
+        <url-pattern>/admin/chat</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminReviewServlet</servlet-name>
+        <servlet-class>controller.AdminReviewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminReviewServlet</servlet-name>
+        <url-pattern>/admin/reviews</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>controller.AccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/admin/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminCustomerServlet</servlet-name>
+        <servlet-class>controller.AdminCustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminCustomerServlet</servlet-name>
+        <url-pattern>/admin/customers</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>controller.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/orders</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ReviewsServlet</servlet-name>
+        <servlet-class>controller.ReviewsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReviewsServlet</servlet-name>
+        <url-pattern>/reviews</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>QuoteServlet</servlet-name>
+        <servlet-class>controller.QuoteServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>QuoteServlet</servlet-name>
+        <url-pattern>/quote/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>InvoiceServlet</servlet-name>
+        <servlet-class>controller.InvoiceServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>InvoiceServlet</servlet-name>
+        <url-pattern>/invoice/print</url-pattern>
+    </servlet-mapping>
+    -->
+</web-app>

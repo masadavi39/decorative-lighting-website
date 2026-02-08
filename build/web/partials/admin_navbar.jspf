@@ -1,0 +1,89 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <!-- Pushmenu: mở/đóng sidebar -->
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></a>
+    </li>
+
+    <!-- Ẩn bớt text trên mobile; chỉ icon hiện -->
+    <li class="nav-item d-none d-md-inline-block">
+      <a href="${pageContext.request.contextPath}/admin/dashboard" class="nav-link">
+        <i class="fas fa-tachometer-alt mr-1"></i> <span class="d-none d-lg-inline">Dashboard</span>
+      </a>
+    </li>
+    <li class="nav-item d-none d-md-inline-block">
+      <a href="${pageContext.request.contextPath}/admin/products?action=list" class="nav-link">
+        <i class="fas fa-home mr-1"></i> <span class="d-none d-lg-inline">Trang chính</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- Right navbar -->
+  <ul class="navbar-nav ml-auto">
+    <!-- Dark mode toggle -->
+    <li class="nav-item">
+      <a class="nav-link" href="#" id="adminDarkToggle" title="Chế độ tối" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </a>
+    </li>
+
+    <!-- User dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link d-flex align-items-center" data-toggle="dropdown" href="#" aria-expanded="false">
+        <img src="https://placehold.co/28x28?text=A" class="img-circle elevation-1 mr-2" alt="Avatar" style="width:28px;height:28px;">
+        <span class="d-none d-sm-inline">
+          <c:choose>
+            <c:when test="${not empty sessionScope.user}">${sessionScope.user.fullName}</c:when>
+            <c:otherwise>Admin</c:otherwise>
+          </c:choose>
+        </span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <c:choose>
+          <c:when test="${not empty sessionScope.user}">
+            <span class="dropdown-item disabled" style="font-size:.8rem;">Xin chào, ${sessionScope.user.fullName}</span>
+            <div class="dropdown-divider"></div>
+            <a href="${pageContext.request.contextPath}/admin/account" class="dropdown-item">
+              <i class="fas fa-user-shield mr-2"></i> Tài khoản
+            </a>
+            <a href="${pageContext.request.contextPath}/auth?action=logout" class="dropdown-item">
+              <i class="fas fa-sign-out-alt mr-2"></i> Đăng xuất
+            </a>
+          </c:when>
+          <c:otherwise>
+            <a href="${pageContext.request.contextPath}/auth?action=login" class="dropdown-item">
+              <i class="fas fa-sign-in-alt mr-2"></i> Đăng nhập
+            </a>
+          </c:otherwise>
+        </c:choose>
+      </div>
+    </li>
+  </ul>
+</nav>
+<style>
+  /* Responsive tối ưu cho navbar trên mobile: thu gọn padding, ẩn text */
+  @media (max-width: 576px) {
+    .main-header .navbar-nav .nav-link { padding: .4rem .6rem; }
+    .main-header .navbar-nav .nav-link .mr-1 { margin-right: .25rem !important; }
+  }
+</style>
+<script>
+  (function(){
+    const key='admin_dark_mode';
+    const body=document.body;
+    function apply(val){body.classList.toggle('dark-mode', val==='on');}
+    apply(localStorage.getItem(key)||'off');
+    const btn=document.getElementById('adminDarkToggle');
+    if(btn){
+      btn.addEventListener('click',e=>{
+        e.preventDefault();
+        const next=body.classList.contains('dark-mode')?'off':'on';
+        localStorage.setItem(key,next);
+        apply(next);
+      });
+    }
+  })();
+</script>

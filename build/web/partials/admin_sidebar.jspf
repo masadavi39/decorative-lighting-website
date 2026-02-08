@@ -1,0 +1,208 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <a href="${pageContext.request.contextPath}/admin/dashboard" class="brand-link d-flex align-items-center">
+    <i class="fas fa-lightbulb brand-image img-circle elevation-3 mr-2" style="opacity:.85;"></i>
+    <span class="brand-text font-weight-light d-none d-sm-inline">Light Admin</span>
+    <span class="brand-text font-weight-light d-inline d-sm-none">Admin</span>
+  </a>
+
+  <div class="sidebar">
+    <!-- User -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
+      <div class="image">
+        <img src="https://placehold.co/160x160?text=Admin" class="img-circle elevation-2" alt="User" style="width:32px;height:32px;">
+      </div>
+      <div class="info">
+        <a href="#" class="d-block text-truncate" style="max-width:140px;">
+          <c:choose>
+            <c:when test="${not empty sessionScope.user}">${sessionScope.user.fullName}</c:when>
+            <c:otherwise>Administrator</c:otherwise>
+          </c:choose>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu: treeview, no auto-accordion; persist collapse state -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column"
+          data-widget="treeview" role="menu" data-accordion="false" id="adminTree">
+        <!-- Tổng quan -->
+        <li class="nav-item">
+          <a href="${pageContext.request.contextPath}/admin/dashboard"
+             class="nav-link ${activeMenu == 'dashboard' ? 'active' : ''}">
+            <i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p>
+          </a>
+        </li>
+
+        <!-- BÁN HÀNG -->
+        <li class="nav-item has-treeview" data-group="sales">
+          <a href="#" class="nav-link ${activeGroup == 'sales' ? 'active' : ''}">
+            <i class="nav-icon fas fa-store"></i>
+            <p>Bán hàng<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/orders"
+                 class="nav-link ${activeMenu == 'orders' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Đơn hàng</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/products?action=revenue"
+                 class="nav-link ${activeMenu == 'revenue' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Doanh thu</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- SẢN PHẨM -->
+        <li class="nav-item has-treeview" data-group="products">
+          <a href="#" class="nav-link ${activeGroup == 'products' ? 'active' : ''}">
+            <i class="nav-icon fas fa-box"></i>
+            <p>Sản phẩm<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/products?action=list"
+                 class="nav-link ${activeMenu == 'products' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Quản lý sản phẩm</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- KHÁCH HÀNG -->
+        <li class="nav-item has-treeview" data-group="customers">
+          <a href="#" class="nav-link ${activeGroup == 'customers' ? 'active' : ''}">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Khách hàng<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/customers"
+                 class="nav-link ${activeMenu == 'customers' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Danh sách & Đơn hàng</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- TIẾP THỊ -->
+        <li class="nav-item has-treeview" data-group="marketing">
+          <a href="#" class="nav-link ${activeGroup == 'marketing' ? 'active' : ''}">
+            <i class="nav-icon fas fa-bullhorn"></i>
+            <p>Tiếp thị<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/coupons"
+                 class="nav-link ${activeMenu == 'coupons' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Coupon</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- HỖ TRỢ -->
+        <li class="nav-item has-treeview" data-group="support">
+          <a href="#" class="nav-link ${activeGroup == 'support' ? 'active' : ''}">
+            <i class="nav-icon fas fa-headset"></i>
+            <p>Hỗ trợ<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/reviews"
+                 class="nav-link ${activeMenu == 'reviews' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Đánh giá</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/feedbacks"
+                 class="nav-link ${activeMenu == 'feedbacks' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Ý kiến</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/chat"
+                 class="nav-link ${activeMenu == 'chat' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Hỗ trợ chat</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- HỆ THỐNG -->
+        <li class="nav-item has-treeview" data-group="system">
+          <a href="#" class="nav-link ${activeGroup == 'system' ? 'active' : ''}">
+            <i class="nav-icon fas fa-cogs"></i>
+            <p>Hệ thống<i class="right fas fa-angle-left"></i></p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="${pageContext.request.contextPath}/admin/account"
+                 class="nav-link ${activeMenu == 'accounts' ? 'active' : ''}">
+                <i class="far fa-circle nav-icon"></i><p>Tài khoản</p>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+</aside>
+<style>
+  @media (max-width: 576px) {
+    .main-sidebar { width: 72px; }
+    .main-sidebar .brand-link .brand-text,
+    .main-sidebar .nav-sidebar .nav-link p { display: none !important; }
+    .main-sidebar .nav-sidebar .nav-link { justify-content: center; }
+    .main-sidebar .nav-sidebar .nav-link i.nav-icon { margin-right: 0 !important; }
+    .nav-treeview { padding-left: .4rem; }
+  }
+  @media (min-width: 577px) {
+    .main-sidebar { width: 250px; }
+  }
+</style>
+<script>
+  // Persist open/close state per group; do not auto-close other groups; restore before checking active link
+  (function(){
+    const groups = document.querySelectorAll('.nav-item.has-treeview');
+    // Restore saved states first
+    groups.forEach(group => {
+      const key = 'sidebar_group_' + (group.getAttribute('data-group') || '');
+      const saved = localStorage.getItem(key);
+      if (saved === 'open') {
+        group.classList.add('menu-open');
+        const toggle = group.querySelector('> a.nav-link');
+        if (toggle) toggle.classList.add('active');
+      }
+    });
+    // Ensure the group containing an active link is open, but do NOT overwrite saved states of others
+    const activeLink = document.querySelector('.nav-treeview .nav-link.active');
+    if (activeLink) {
+      const grp = activeLink.closest('.has-treeview');
+      if (grp && !grp.classList.contains('menu-open')) {
+        grp.classList.add('menu-open');
+        const toggle = grp.querySelector('> a.nav-link');
+        if (toggle) toggle.classList.add('active');
+        // Do NOT set localStorage here to avoid clobbering user preference
+      }
+    }
+    // Toggle handler: only this group; save state
+    groups.forEach(group => {
+      const toggle = group.querySelector('> a.nav-link');
+      const key = 'sidebar_group_' + (group.getAttribute('data-group') || '');
+      if (toggle) {
+        toggle.addEventListener('click', function(e){
+          e.preventDefault();
+          group.classList.toggle('menu-open');
+          toggle.classList.toggle('active');
+          localStorage.setItem(key, group.classList.contains('menu-open') ? 'open' : 'closed');
+        });
+      }
+    });
+  })();
+</script>
