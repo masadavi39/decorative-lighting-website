@@ -17,7 +17,7 @@ public class CategoryDAO {
      */
     public List<Category> getAllCategories() {
         List<Category> list = new ArrayList<>();
-        String sql = "SELECT * FROM Categories ORDER BY parent_id, name";
+        String sql = "SELECT * FROM categories ORDER BY parent_id, name";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -40,7 +40,7 @@ public class CategoryDAO {
      */
     public List<Category> getParentCategories() {
         List<Category> list = new ArrayList<>();
-        String sql = "SELECT * FROM Categories WHERE parent_id IS NULL ORDER BY name";
+        String sql = "SELECT * FROM categories WHERE parent_id IS NULL ORDER BY name";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -61,7 +61,7 @@ public class CategoryDAO {
      */
     public List<Category> getSubCategories(int parentId) {
         List<Category> list = new ArrayList<>();
-        String sql = "SELECT * FROM Categories WHERE parent_id = ? ORDER BY name";
+        String sql = "SELECT * FROM categories WHERE parent_id = ? ORDER BY name";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, parentId);
@@ -84,7 +84,7 @@ public class CategoryDAO {
      * Thêm danh mục mới (có thể có hoặc không có parent_id).
      */
     public boolean insert(Category category) {
-        String sql = "INSERT INTO Categories (name, parent_id) VALUES (?, ?)";
+        String sql = "INSERT INTO categories (name, parent_id) VALUES (?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, category.getName());

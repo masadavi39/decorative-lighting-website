@@ -11,9 +11,16 @@ import java.sql.SQLException;
  * connection settings, modify the constants below.
  */
 public class DBConnection {
-private static final String URL ="jdbc:mysql://localhost:3386/light_csdl?useUnicode=true&characterEncoding=UTF-8&characterSetResults=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=UTC&useSSL=false";
+private static final String URL ="jdbc:mysql://localhost:3386/light_db"
+        + "?useUnicode=true"
+        + "&characterEncoding=UTF-8"
+        + "&characterSetResults=UTF-8"
+        + "&connectionCollation=utf8mb4_unicode_ci"
+        + "&serverTimezone=Asia/Ho_Chi_Minh"
+        + "&useSSL=false"
+        + "&allowPublicKeyRetrieval=true";
     private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String PASS = "Tranh51@";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     /**

@@ -2,532 +2,635 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<fmt:setLocale value="vi_VN"/>
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <title>Web bán đèn trang trí</title>
-        <style>
-            :root{
-                --bg-color:#f8f9fa;
-                --text-color:#333;
-                --muted:#556;
-                --card-bg:#fff;
-                --shadow:rgba(0,0,0,0.1);
-                --heading:#2c3e50;
-                --primary:#007bff;      /* xanh dương */
-                --success:#28a745;
-                --danger:#e74c3c;
-                --border:#dcdcdc;
-                --input-bg:#fff;
-                --input-text:#222;
-                --input-border:#cfcfcf;
-                --chip-bg:#eef4ff;
-            }
-            body.dark{
-                --bg-color:#121416;
-                --text-color:#e9e9e9;
-                --muted:#a7b0c0;
-                --card-bg:#1a1f25;
-                --shadow:rgba(0,0,0,0.4);
-                --heading:#cde1ff;
-                --primary:#4ea3ff;
-                --success:#48d06b;
-                --danger:#ff6b6b;
-                --border:#2b323b;
-                --input-bg:#11161c;
-                --input-text:#e9e9e9;
-                --input-border:#2c3440;
-                --chip-bg:#1e2a38;
-            }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Shop - Thế Giới Đèn Trang Trí</title>
 
-            *{margin:0;padding:0;box-sizing:border-box}
-            body{
-                font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-                background:var(--bg-color);
-                color:var(--text-color);
-                line-height:1.6;
-                transition:background .3s,color .3s;
-            }
-            .container{max-width:1400px;margin:0 auto;padding:20px}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 
-            /* Banner */
-            .banner{width:100%;margin:20px 0;border-radius:12px;overflow:hidden;box-shadow:0 8px 20px var(--shadow)}
-            .banner-slider{position:relative;height:400px}
-            .slide{position:absolute;width:100%;height:100%;opacity:0;transition:opacity 1s ease}
-            .slide.active{opacity:1}
-            .slide img{width:100%;height:400px;object-fit:cover}
-            .prev,.next{
-                position:absolute;top:50%;transform:translateY(-50%);
-                background:rgba(0,0,0,.45);color:#fff;border:none;
-                padding:12px 16px;cursor:pointer;font-size:18px;border-radius:10px;
-                transition:background .2s
-            }
-            .prev:hover,.next:hover{background:rgba(0,0,0,.7)}
-            .prev{left:10px} .next{right:10px}
-            .banner-thumbs{display:flex;justify-content:center;gap:10px;padding:14px;background:var(--bg-color)}
-            .banner-thumbs img{width:80px;height:60px;object-fit:cover;border-radius:8px;cursor:pointer;opacity:.6;transition:opacity .2s,transform .2s}
-            .banner-thumbs img.active,.banner-thumbs img:hover{opacity:1;transform:translateY(-2px)}
+    <style>
+        :root {
+            --primary: #0d6efd;
+            --accent: #d4af37;
+            --radius-xl: 16px;
+            --radius-md: 12px;
+            --shadow-hover: 0 15px 30px rgba(0,0,0,0.1);
+            --shadow-card: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        body { background: #fcfcfc; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-            /* Layout */
-            .main-content{display:flex;gap:30px;margin-top:30px}
-            .products-section{flex:3}
-            .sidebar{flex:1;display:flex;flex-direction:column;gap:20px}
+        /* ===== BANNER SWIPER (tncstore style) ===== */
+        .banner-section { margin-bottom: 2.5rem; }
+        .banner-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
 
-            /* Cards */
-            .bestseller-box,.search-box{
-                background:var(--card-bg);padding:20px;border-radius:14px;
-                box-shadow:0 6px 16px var(--shadow);border:1px solid var(--border)
-            }
-            h2{color:var(--heading);text-align:center;margin-bottom:22px;font-size:2rem}
-            h3{color:var(--heading);margin-bottom:14px;text-align:left}
+        /* Main slider */
+        .swiper-main {
+            width: 100%;
+            height: 480px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-hover);
+            overflow: hidden;
+        }
+        .swiper-main .swiper-slide {
+            position: relative;
+            background: #000;
+        }
+        .swiper-main .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: .9;
+            display: block;
+        }
 
-            /* Sort */
-            .products-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px;flex-wrap:wrap}
-            .sort-form{
-                display:flex;align-items:center;gap:8px;background:var(--card-bg);
-                padding:6px 10px;border-radius:10px;box-shadow:0 4px 10px var(--shadow);border:1px solid var(--border)
-            }
-            .sort-form label{font-weight:600;font-size:.95rem}
-            .sort-form select{
-                padding:10px 12px;border-radius:8px;border:1px solid var(--input-border);
-                background:var(--input-bg);color:var(--input-text);cursor:pointer;font-size:.95rem;
-                transition:border-color .2s,box-shadow .2s;appearance:none;
-                background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-                background-repeat:no-repeat;background-position:right 12px center;padding-right:32px
-            }
-            .sort-form select:hover{border-color:var(--primary)}
+        .hero-content {
+            position: absolute; bottom: 60px; left: 60px; right: 60px;
+            z-index: 10; color: #fff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+            pointer-events: none;
+        }
+        .hero-content h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: .5rem; letter-spacing: -0.5px; }
+        .hero-content p  { font-size: 1.1rem; opacity: .9; margin-bottom: 1.5rem; max-width: 600px; }
+        .hero-btn {
+            pointer-events: auto;
+            background: var(--accent); border: none;
+            padding: 10px 28px; font-weight: 600; border-radius: 50px;
+            color: #fff; text-decoration: none; transition: .3s;
+            display: inline-block;
+        }
+        .hero-btn:hover { background: #b59020; transform: translateY(-2px); color: #fff; }
 
-            /* Grid */
-            .product-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:30px}
-            .product-card{
-                background:var(--card-bg);border-radius:14px;padding:16px;text-align:center;
-                box-shadow:0 6px 16px var(--shadow);transition:transform .2s,border-color .2s;
-                border:1px solid var(--border);display:flex;flex-direction:column
-            }
-            .product-card:hover{transform:translateY(-4px)}
-            .product-card a img{width:100%;height:180px;object-fit:cover;border-radius:10px;margin-bottom:12px;display:block}
-            .product-card h3{font-size:1.06rem;margin-bottom:6px;color:var(--text-color)}
-            .product-card .price{color:var(--primary);font-weight:700;font-size:1.06rem;margin-bottom:6px}
-            .product-card .button:not(.secondary){margin-top:auto;margin-bottom:0}
-            .stock{font-size:.9rem;margin-bottom:10px;color:var(--muted)}
-            .stock.in{color:var(--success)} .stock.out{color:var(--danger)}
+        /* Navigation arrows */
+        .swiper-main .swiper-button-next,
+        .swiper-main .swiper-button-prev {
+            color: #fff;
+            width: 44px; height: 44px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            transition: .3s;
+        }
+        .swiper-main .swiper-button-next:hover,
+        .swiper-main .swiper-button-prev:hover {
+            background: rgba(0,0,0,0.6);
+        }
+        .swiper-main .swiper-button-next::after,
+        .swiper-main .swiper-button-prev::after {
+            font-size: 18px;
+            font-weight: 700;
+        }
 
-            /* Buttons */
-            .button{
-                background:var(--primary);color:#fff;border:none;padding:10px 16px;
-                border-radius:10px;cursor:pointer;text-decoration:none;display:inline-block;
-                margin:5px;transition:transform .15s,opacity .2s,filter .2s
-            }
-            .button:hover{transform:translateY(-2px);filter:brightness(0.98)}
-            .button.secondary{background:#6c757d}
-            .button.secondary:hover{opacity:.92}
+        /* Pagination dots trên main slider (tncstore style) */
+        .swiper-main .swiper-pagination-bullet {
+            width: 12px; height: 12px;
+            background: rgba(255,255,255,0.5);
+            opacity: 1;
+            transition: .3s;
+        }
+        .swiper-main .swiper-pagination-bullet-active {
+            background: #fff;
+            width: 30px;
+            border-radius: 6px;
+        }
 
-            /* Pagination */
-            .pagination{text-align:center;margin:24px 0}
-            .pagination .button{margin:0 2px}
-            .pagination .button.active{background:#28a745}
-            .pagination input{
-                width:70px;padding:8px;border-radius:8px;border:1px solid var(--input-border);
-                background:var(--input-bg);color:var(--input-text)
-            }
+        /* Thumbnail slider bên dưới */
+        .swiper-thumbs-wrapper {
+            max-width: 600px;
+            margin: 15px auto 0;
+        }
+        .swiper-thumbs {
+            width: 100%;
+            height: 75px;
+        }
+        .swiper-thumbs .swiper-slide {
+            opacity: 0.5;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all .3s ease;
+            box-sizing: border-box;
+        }
+        .swiper-thumbs .swiper-slide-thumb-active {
+            opacity: 1;
+            border-color: var(--primary);
+            box-shadow: 0 3px 10px rgba(13,110,253,0.25);
+        }
+        .swiper-thumbs .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
-            /* Theme toggle */
-            .theme-toggle{
-                position:fixed;bottom:20px;right:20px;background:#ffc107;color:#000;
-                border:none;padding:10px 15px;border-radius:12px;cursor:pointer;font-weight:700;
-                box-shadow:0 4px 12px var(--shadow);z-index:999
-            }
-            .theme-toggle:hover{filter:brightness(.95)}
+        /* ===== PRODUCT CARD ===== */
+        .product-card {
+            border: none; border-radius: var(--radius-md);
+            transition: all .3s ease; background: #fff; height: 100%;
+        }
+        .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .card-img-wrapper {
+            position: relative; overflow: hidden;
+            border-radius: var(--radius-md) var(--radius-md) 0 0;
+            padding-top: 100%;
+        }
+        .card-img-top {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform .5s ease;
+        }
+        .product-card:hover .card-img-top { transform: scale(1.08); }
 
-            /* Advanced search */
-            .search-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-            .adv-toggle{
-                background:transparent;border:1px solid var(--border);color:var(--text-color);
-                padding:8px 12px;border-radius:10px;cursor:pointer;transition:border-color .2s
-            }
-            .adv-toggle:hover{border-color:var(--primary)}
-            .adv-body{overflow:hidden;max-height:0;transition:max-height .35s ease,padding .25s ease}
-            .adv-body.open{max-height:600px;padding-top:12px}
-            .form-grid{display:grid;grid-template-columns:1fr;gap:15px}
-            .form-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:15px}
-            .form-row.price-group{grid-template-columns:1fr}
-            .form-row.price-group label{grid-column:1 / -1;margin-bottom:-5px;font-weight:700}
-            .form-row input,.form-row select{
-                width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--input-border);
-                background:var(--input-bg);color:var(--input-text);outline:none;
-                transition:border-color .2s,box-shadow .2s;appearance:none;
-                background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
-                background-repeat:no-repeat;background-position:right 12px center;padding-right:34px
-            }
-            .form-row input:focus,.form-row select:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(0,123,255,.25)}
-            body.dark .form-row input:focus,body.dark .form-row select:focus{box-shadow:0 0 0 3px rgba(78,163,255,.4)}
-            .price-inputs{display:flex;flex-direction:column;gap:10px}
-            .price-input-row{display:flex;align-items:center;gap:10px}
-            .price-input-row span{font-weight:600;color:var(--text-color);width:50px;flex-shrink:0}
-            .search-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
+        .price-tag { color: #d63384; font-weight: 700; font-size: 1.1rem; }
+        .stock-status { font-size: .8rem; font-weight: 500; }
+        .btn-view { border-radius: 6px; font-weight: 500; }
 
-            @media (max-width:992px){
-                .product-grid{grid-template-columns:repeat(2,1fr)}
-                .sidebar{flex:1}
-            }
-            @media (max-width:576px){
-                .product-grid{grid-template-columns:1fr}
-                .form-row{grid-template-columns:1fr;gap:8px}
-                .form-row.price-group{grid-template-columns:1fr}
-            }
+        /* ===== PROMO ===== */
+        .promo-card {
+            background: #fff; border: 1px solid #eef0f3;
+            border-radius: var(--radius-md); padding: 20px;
+            display: flex; align-items: center; gap: 15px; transition: .3s;
+        }
+        .promo-card:hover { border-color: var(--primary); box-shadow: var(--shadow-card); }
+        .promo-icon {
+            width: 50px; height: 50px;
+            background: rgba(13,110,253,0.1); color: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; flex-shrink: 0;
+        }
 
-            /* Success popup */
-            .success-form{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,.45);backdrop-filter:blur(2px);z-index:9999}
-            .success-form.active{display:flex}
-            .success-form .content-container{
-                background:var(--card-bg);color:var(--text-color);padding:28px 36px;border-radius:16px;
-                box-shadow:0 16px 40px rgba(0,0,0,.30);max-width:520px;width:calc(100% - 40px);
-                text-align:center;transform:translateY(10px) scale(.96);opacity:0;
-                transition:transform .3s cubic-bezier(.19,.71,.27,1),opacity .3s ease;
-            }
-            .success-form.active .content-container{transform:translateY(0) scale(1);opacity:1;}
-            .success-icon{width:72px;height:72px;margin:0 auto 16px;display:block}
-            .success-icon circle,.success-icon path{stroke:var(--primary)}
-            .success-text{font-size:1.05rem;font-weight:700}
-            .success-icon.spin-once{animation:icon-spin-once .6s cubic-bezier(.22,.8,.35,1.01);transform-origin:50% 50%;}
-            @keyframes icon-spin-once{
-                0%{transform:rotate(-180deg) scale(.85);opacity:.35}
-                50%{opacity:1}
-                100%{transform:rotate(0) scale(1);opacity:1}
-            }
+        /* ===== SIDEBAR ===== */
+        .filter-card { border: none; box-shadow: var(--shadow-card); border-radius: var(--radius-md); }
+        .filter-header {
+            background: #fff; border-bottom: 1px solid #f0f0f0;
+            padding: 15px; border-radius: var(--radius-md) var(--radius-md) 0 0;
+        }
 
-            .promo-section div h4{color:var(--primary);font-size:1.1rem;margin-bottom:6px}
-            .promo-section div p{font-size:.95rem;color:var(--text-color)}
-        </style>
-    </head>
-    <body>
-        <%@ include file="partials/header.jsp" %>
+        .bestseller-item {
+            width: 60px; height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            display: block;
+        }
 
-        <div class="container">
-            <div class="banner">
-                <div class="banner-slider">
-                    <div class="slide active"><img src="${pageContext.request.contextPath}/images/banner1.jpg" alt="Banner 1" width="1600" height="400" loading="eager"></div>
-                    <div class="slide"><img src="${pageContext.request.contextPath}/images/banner2.jpg" alt="Banner 2" width="1600" height="400" loading="lazy"></div>
-                    <div class="slide"><img src="${pageContext.request.contextPath}/images/banner3.jpg" alt="Banner 3"width="1600" height="400" loading="lazy"></div>
-                    <button class="prev" aria-label="Slide trước">❮</button>
-                    <button class="next" aria-label="Slide sau">❯</button>
-                </div>
-                <div class="banner-thumbs" aria-label="Chọn slide">
-                    <img src="${pageContext.request.contextPath}/images/banner1.jpg" class="thumb active" alt="Thumb 1">
-                    <img src="${pageContext.request.contextPath}/images/banner2.jpg" class="thumb" alt="Thumb 2">
-                    <img src="${pageContext.request.contextPath}/images/banner3.jpg" class="thumb" alt="Thumb 3">
-                </div>
-            </div>
-            <div class="promo-section" style="margin-bottom:25px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center;">
-                <div style="flex:1;min-width:200px;background:var(--chip-bg);padding:20px;border-radius:14px;text-align:center;box-shadow:0 6px 16px var(--shadow);">
-                    <h4 style="margin-bottom:10px;">🚚 Miễn phí giao hàng</h4><p>Cho đơn hàng từ 1.000.000₫ trở lên</p>
-                </div>
-                <div style="flex:1;min-width:200px;background:var(--chip-bg);padding:20px;border-radius:14px;text-align:center;box-shadow:0 6px 16px var(--shadow);">
-                    <h4 style="margin-bottom:10px;">🛠 Bảo hành</h4><p>Bảo hành sản phẩm 12 tháng, yên tâm sử dụng</p>
-                </div>
-                <div style="flex:1;min-width:200px;background:var(--chip-bg);padding:20px;border-radius:14px;text-align:center;box-shadow:0 6px 16px var(--shadow);">
-                    <h4 style="margin-bottom:10px;">🔄 Đổi trả dễ dàng</h4><p>Đổi trả trong 7 ngày nếu sản phẩm lỗi</p>
-                </div>
-            </div>
+        .bestseller-scroll { max-height: 420px; overflow-y: auto; }
+        .bestseller-scroll::-webkit-scrollbar { width: 6px; }
+        .bestseller-scroll::-webkit-scrollbar-thumb { background: #d0d5dd; border-radius: 6px; }
 
-            <div class="main-content">
-                <div class="products-section">
-                    <div class="products-header">
-                        <h2>💡 Danh sách sản phẩm</h2>
-                        <form id="sortForm" method="get" action="${pageContext.request.contextPath}/products" class="sort-form">
-                            <input type="hidden" name="action" value="list"/>
-                            <c:if test="${param.category != null}">
-                                <input type="hidden" name="category" value="${param.category}"/>
-                            </c:if>
-                            <c:if test="${param.parent != null}">
-                                <input type="hidden" name="parent" value="${param.parent}"/>
-                            </c:if>
-                            <input type="hidden" name="page" value="1"/>
-                            <label for="sortBy">Sắp xếp:</label>
-                            <select name="sortBy" id="sortBy" onchange="this.form.submit()">
-                                <option value="">-- Mặc định --</option>
-                                <option value="price_asc" ${param.sortBy eq 'price_asc' ? 'selected' : ''}>Giá ↑</option>
-                                <option value="price_desc" ${param.sortBy eq 'price_desc' ? 'selected' : ''}>Giá ↓</option>
-                                <option value="name_asc" ${param.sortBy eq 'name_asc' ? 'selected' : ''}>Tên A-Z</option>
-                                <option value="name_desc" ${param.sortBy eq 'name_desc' ? 'selected' : ''}>Tên Z-A</option>
-                            </select>
-                        </form>
+        /* AJAX loading */
+        .ajax-loading { display: none; text-align: center; padding: 50px 20px; }
+        .ajax-loading.show { display: block; }
+        #productGrid.fading { opacity: .35; pointer-events: none; transition: .2s; }
+
+        /* Pagination */
+        .pagination .page-link {
+            border-radius: 8px !important; margin: 0 3px;
+            border: none; color: #555; transition: .2s;
+        }
+        .pagination .page-item.active .page-link {
+            background: var(--primary); color: #fff;
+            box-shadow: 0 4px 12px rgba(13,110,253,0.3);
+        }
+        .pagination .page-link:hover { background: #e9ecef; }
+
+        /* Toast thông báo lỗi */
+        .ajax-error-toast {
+            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+            background: #dc3545; color: #fff; padding: 12px 24px;
+            border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            display: none; font-size: 0.9rem; max-width: 360px;
+        }
+        .ajax-error-toast.show { display: flex; align-items: center; gap: 8px; }
+
+        @media (max-width: 768px) {
+            .swiper-main { height: 280px; }
+            .hero-content { bottom: 20px; left: 20px; right: 20px; }
+            .hero-content h2 { font-size: 1.5rem; }
+            .hero-btn { padding: 6px 16px; font-size: .9rem; }
+            .swiper-thumbs-wrapper { display: none; }
+        }
+        @media (max-width: 576px) {
+            .swiper-main { height: 200px; }
+            .hero-content p { display: none; }
+        }
+    </style>
+</head>
+<body>
+<%@ include file="partials/header.jsp" %>
+
+<!-- Toast thông báo lỗi AJAX -->
+<div class="ajax-error-toast" id="ajaxErrorToast">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span id="ajaxErrorMsg">Đã xảy ra lỗi, vui lòng thử lại.</span>
+</div>
+
+<div class="container py-4">
+
+    <!-- ===== BANNER (tncstore style: main + pagination dots + thumbs bên dưới) ===== -->
+    <div class="banner-section">
+        <div class="banner-inner">
+            <!-- Main Slider -->
+            <div class="swiper swiper-main" id="swiperMain">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/images/banner1.jpg" alt="Đèn trang trí phòng khách">
+                        <div class="hero-content">
+                            <h2>Bừng sáng không gian sống</h2>
+                            <p class="d-none d-md-block">Bộ sưu tập đèn chùm pha lê cao cấp mới nhất 2024</p>
+                            <a href="#productList" class="hero-btn">Mua ngay <i class="bi bi-arrow-right"></i></a>
+                        </div>
                     </div>
+                    <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/images/banner2.jpg" alt="Đèn ngủ hiện đại">
+                        <div class="hero-content">
+                            <h2>Ấm áp từng góc nhỏ</h2>
+                            <p class="d-none d-md-block">Giảm giá 20% cho toàn bộ mẫu đèn ngủ để bàn</p>
+                            <a href="#" class="hero-btn">Xem chi tiết</a>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/images/banner3.jpg" alt="Đèn ngoại thất">
+                    </div>
+                </div>
+                <!-- Navigation arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <!-- Pagination dots -->
+                <div class="swiper-pagination"></div>
+            </div>
 
-                    <div class="product-grid">
-                        <c:forEach var="p" items="${products}">
-                            <div class="product-card">
-                                <a href="${pageContext.request.contextPath}/products?action=detail&id=${p.id}">
-                                    <img src="${pageContext.request.contextPath}/${p.imagePath}" alt="${p.name}"/>
+            <!-- Thumbnail Slider (tách biệt, dưới main) -->
+            <div class="swiper-thumbs-wrapper">
+                <div class="swiper swiper-thumbs" id="swiperThumbs">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner1.jpg" alt="thumb 1"></div>
+                        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner2.jpg" alt="thumb 2"></div>
+                        <div class="swiper-slide"><img src="${pageContext.request.contextPath}/images/banner3.jpg" alt="thumb 3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROMO ===== -->
+    <div class="row g-3 mb-5">
+        <div class="col-md-4">
+            <div class="promo-card">
+                <div class="promo-icon"><i class="bi bi-truck"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0">Miễn phí vận chuyển</h6>
+                    <small class="text-muted">Đơn hàng > 1.000k</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="promo-card">
+                <div class="promo-icon"><i class="bi bi-shield-check"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0">Bảo hành 12 tháng</h6>
+                    <small class="text-muted">Lỗi 1 đổi 1 tận nhà</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="promo-card">
+                <div class="promo-icon"><i class="bi bi-headset"></i></div>
+                <div>
+                    <h6 class="fw-bold mb-0">Hỗ trợ 24/7</h6>
+                    <small class="text-muted">Tư vấn lắp đặt miễn phí</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="productList">
+        <!-- MAIN CONTENT -->
+        <div class="col-lg-9 order-lg-2 mb-4">
+            <div class="d-flex justify-content-between align-items-center bg-white p-3 rounded shadow-sm mb-4 border">
+                <h5 class="mb-0 fw-bold text-uppercase text-secondary">
+                    <i class="bi bi-grid-fill me-2"></i>Sản phẩm
+                </h5>
+                <%--
+                    [FIX Sort] Không dùng form submit nữa.
+                    Select đổi → JS build URL chuẩn rồi navigate (không AJAX).
+                    Lý do: AJAX parse full page lãng phí + gây lỗi khi server không trả partial.
+                --%>
+                <div class="d-flex align-items-center gap-2">
+                    <label for="sortBy" class="small fw-semibold text-muted d-none d-sm-inline">Sắp xếp:</label>
+                    <select id="sortBy" class="form-select form-select-sm border-secondary" style="width:160px;">
+                        <option value="">Mặc định</option>
+                        <option value="price_asc"  ${param.sortBy eq 'price_asc'  ? 'selected' : ''}>Giá tăng dần</option>
+                        <option value="price_desc" ${param.sortBy eq 'price_desc' ? 'selected' : ''}>Giá giảm dần</option>
+                        <option value="name_asc"   ${param.sortBy eq 'name_asc'   ? 'selected' : ''}>Tên A-Z</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="ajax-loading" id="ajaxLoading">
+                <div class="spinner-border" role="status"><span class="visually-hidden">Đang tải...</span></div>
+                <p class="mt-3 text-muted">Đang tải sản phẩm...</p>
+            </div>
+
+            <div id="productGrid">
+                <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3 g-md-4">
+                    <c:forEach var="p" items="${products}">
+                        <div class="col">
+                            <div class="card product-card h-100 shadow-sm">
+                                <a href="${pageContext.request.contextPath}/products?action=detail&id=${p.id}" class="card-img-wrapper">
+                                    <img src="${pageContext.request.contextPath}/${fn:escapeXml(p.imagePath)}"
+                                         class="card-img-top"
+                                         alt="${fn:escapeXml(p.name)}"
+                                         loading="lazy">
                                 </a>
-                                <h3>${p.name}</h3>
-                                <p class="price">${p.price}₫</p>
-                                <c:set var="stockClass" value="${p.quantity > 0 ? 'stock in' : 'stock out'}"/>
-                                <p class="${stockClass}">Kho: ${p.quantity}</p>
-                                <c:choose>
-                                    <c:when test="${p.quantity > 0}">
-                                        <button type="button" class="button add-to-cart-btn" data-product-id="${p.id}">🛒 Thêm vào giỏ</button>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <button type="button" class="button" disabled style="opacity:.7;cursor:not-allowed;">Hết hàng</button>
-                                    </c:otherwise>
-                                </c:choose>
+                                <div class="card-body d-flex flex-column p-3">
+                                    <h6 class="card-title mb-2" style="font-size:0.95rem; line-height:1.4;">
+                                        <a href="${pageContext.request.contextPath}/products?action=detail&id=${p.id}"
+                                           class="text-decoration-none text-dark stretched-link">
+                                            ${fn:escapeXml(p.name)}
+                                        </a>
+                                    </h6>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="price-tag">
+                                                <fmt:formatNumber value="${p.price}" type="number" groupingUsed="true"/>₫
+                                            </span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="stock-status ${p.quantity > 0 ? 'text-success' : 'text-danger'}">
+                                                <i class="bi ${p.quantity > 0 ? 'bi-check-circle' : 'bi-x-circle'}"></i>
+                                                    ${p.quantity > 0 ? 'Còn hàng' : 'Hết hàng'}
+                                            </span>
+                                        </div>
+                                        <div class="d-grid mt-2">
+                                            <a href="${pageContext.request.contextPath}/products?action=detail&id=${p.id}"
+                                               class="btn btn-outline-primary btn-sm btn-view position-relative z-2">
+                                                Xem chi tiết
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </c:forEach>
-                    </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
 
+            <%-- Pagination: sliding window ±2 --%>
+            <div class="mt-5" id="paginationWrapper">
+                <c:if test="${totalPages > 1}">
+                    <%--
+                        [FIX Pagination URL] Build URL giữ nguyên tất cả param hiện tại
+                        (category, parent, sortBy) để không bị mất khi chuyển trang.
+                    --%>
                     <c:url var="pagingUrl" value="products">
                         <c:param name="action" value="list"/>
                         <c:if test="${not empty param.category}">
-                            <c:param name="category" value="${param.category}"/>
+                            <c:param name="category" value="${fn:escapeXml(param.category)}"/>
                         </c:if>
                         <c:if test="${not empty param.parent}">
-                            <c:param name="parent" value="${param.parent}"/>
+                            <c:param name="parent" value="${fn:escapeXml(param.parent)}"/>
                         </c:if>
                         <c:if test="${not empty param.sortBy}">
-                            <c:param name="sortBy" value="${param.sortBy}"/>
+                            <c:param name="sortBy" value="${fn:escapeXml(param.sortBy)}"/>
                         </c:if>
                     </c:url>
-                    
-                    <div class="pagination">
-                        <c:if test="${currentPage > 1}">
-                            <a href="${pagingUrl}&page=1" class="button">« Đầu</a>
-                            <a href="${pagingUrl}&page=${currentPage - 1}" class="button">‹ Trước</a>
-                        </c:if>
-                        <c:forEach begin="1" end="${totalPages}" var="pageNum">
-                            <a href="${pagingUrl}&page=${pageNum}" class="button ${pageNum == currentPage ? 'active' : ''}">${pageNum}</a>
-                        </c:forEach>
-                        <c:if test="${currentPage < totalPages}">
-                            <a href="${pagingUrl}&page=${currentPage + 1}" class="button">Tiếp ›</a>
-                            <a href="${pagingUrl}&page=${totalPages}" class="button">Cuối »</a>
-                        </c:if>
-                        <form action="${pagingUrl}" method="get" style="display:inline-block;margin-left:15px;">
-                            <input type="hidden" name="action" value="list"/>
-                            <c:if test="${not empty param.category}">
-                                <input type="hidden" name="category" value="${param.category}"/>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center" id="pagination">
+
+                            <c:if test="${currentPage > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pagingUrl}&page=1" aria-label="Trang đầu">«</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="${pagingUrl}&page=${currentPage - 1}" aria-label="Trang trước">‹</a>
+                                </li>
                             </c:if>
-                            <c:if test="${not empty param.parent}">
-                                <input type="hidden" name="parent" value="${param.parent}"/>
+
+                            <c:set var="startPg" value="${currentPage - 2 < 1 ? 1 : currentPage - 2}"/>
+                            <c:set var="endPg" value="${currentPage + 2 > totalPages ? totalPages : currentPage + 2}"/>
+
+                            <c:if test="${startPg > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pagingUrl}&page=1">1</a>
+                                </li>
+                                <c:if test="${startPg > 2}">
+                                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                                </c:if>
                             </c:if>
-                            <c:if test="${not empty param.sortBy}">
-                                <input type="hidden" name="sortBy" value="${param.sortBy}"/>
+
+                            <c:forEach begin="${startPg}" end="${endPg}" var="pg">
+                                <li class="page-item ${pg == currentPage ? 'active' : ''}">
+                                    <a class="page-link" href="${pagingUrl}&page=${pg}">${pg}</a>
+                                </li>
+                            </c:forEach>
+
+                            <c:if test="${endPg < totalPages}">
+                                <c:if test="${endPg < totalPages - 1}">
+                                    <li class="page-item disabled"><span class="page-link">…</span></li>
+                                </c:if>
+                                <li class="page-item">
+                                    <a class="page-link" href="${pagingUrl}&page=${totalPages}">${totalPages}</a>
+                                </li>
                             </c:if>
-                            <label for="goPage">Trang:</label>
-                            <input type="number" name="page" id="goPage" min="1" max="${totalPages}" required value="${currentPage}" style="width:60px;">
-                            <button type="submit" class="button">Đi</button>
-                        </form>
-                    </div>
+
+                            <c:if test="${currentPage < totalPages}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pagingUrl}&page=${currentPage + 1}" aria-label="Trang sau">›</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="${pagingUrl}&page=${totalPages}" aria-label="Trang cuối">»</a>
+                                </li>
+                            </c:if>
+
+                        </ul>
+                    </nav>
+                </c:if>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-3 order-lg-1">
+            <div class="card filter-card mb-4">
+                <div class="filter-header">
+                    <h6 class="mb-0 fw-bold text-primary"><i class="bi bi-funnel"></i> Lọc sản phẩm</h6>
                 </div>
-
-                <div class="sidebar">
-                    <div class="search-box">
-                        <div class="search-head">
-                            <h3 style="margin:0;">🔍 Tìm kiếm nâng cao</h3>
-                            <button id="toggleAdvBtn" type="button" class="adv-toggle" aria-expanded="false">Mở rộng</button>
+                <div class="card-body">
+                    <%--
+                        [FIX Filter] action="search" gửi về ProductServlet đúng.
+                        Category select so sánh String-to-String bằng <c:set>.
+                    --%>
+                    <form action="${pageContext.request.contextPath}/products" method="get" id="filterForm">
+                        <input type="hidden" name="action" value="search">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Từ khóa</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" name="keyword"
+                                       value="${fn:escapeXml(searchKeyword)}" placeholder="Tên đèn...">
+                            </div>
                         </div>
-                        <div id="advBody" class="adv-body">
-                            <form action="${pageContext.request.contextPath}/products" method="get">
-                                <input type="hidden" name="action" value="search">
-                                <div class="form-grid">
-                                    <div class="form-row">
-                                        <label for="keyword">Tên SP:</label>
-                                        <input type="text" id="keyword" name="keyword" placeholder="Nhập tên sản phẩm..." value="${searchKeyword != null ? searchKeyword : ''}">
-                                    </div>
-                                    <div class="form-row price-group">
-                                        <label>Khoảng giá:</label>
-                                        <div class="price-inputs">
-                                            <div class="price-input-row">
-                                                <span>Từ:</span>
-                                                <input type="number" id="minPrice" name="minPrice" placeholder="0" value="${param.minPrice}">
-                                            </div>
-                                            <div class="price-input-row">
-                                                <span>Đến:</span>
-                                                <input type="number" id="maxPrice" name="maxPrice" placeholder="1000000" value="${param.maxPrice}">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <label for="category">Danh mục:</label>
-                                        <select id="category" name="category">
-                                            <option value="">-- Chọn --</option>
-                                            <c:forEach var="c" items="${categories}">
-                                                <option value="${c.categoryId}" ${param.category eq c.categoryId ? 'selected' : ''}>${c.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="search-actions">
-                                        <button type="reset" class="adv-toggle" onclick="window.location.href='${pageContext.request.contextPath}/products?action=list'">Xóa lọc</button>
-                                        <button type="submit" class="button">Tìm kiếm</button>
-                                    </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Danh mục</label>
+                            <select name="category" class="form-select form-select-sm">
+                                <option value="">-- Tất cả --</option>
+                                <c:forEach var="c" items="${categories}">
+                                    <%-- Ép categoryId sang String để so sánh chính xác --%>
+                                    <c:set var="catIdStr">${c.categoryId}</c:set>
+                                    <option value="${fn:escapeXml(catIdStr)}"
+                                        ${fn:trim(param.category) eq fn:trim(catIdStr) ? 'selected' : ''}>
+                                        ${fn:escapeXml(c.name)}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-muted">Khoảng giá (VNĐ)</label>
+                            <div class="d-flex gap-2">
+                                <input type="number" class="form-control form-control-sm" name="minPrice"
+                                       placeholder="Từ" value="${fn:escapeXml(param.minPrice)}" min="0">
+                                <input type="number" class="form-control form-control-sm" name="maxPrice"
+                                       placeholder="Đến" value="${fn:escapeXml(param.maxPrice)}" min="0">
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-sm fw-bold">
+                                <i class="bi bi-search me-1"></i>Áp dụng
+                            </button>
+                            <a href="${pageContext.request.contextPath}/products?action=list"
+                               class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-x-circle me-1"></i>Bỏ lọc
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card filter-card">
+                <div class="filter-header">
+                    <h6 class="mb-0 fw-bold text-danger"><i class="bi bi-fire"></i> Bán chạy nhất</h6>
+                </div>
+                <div class="list-group list-group-flush bestseller-scroll">
+                    <c:forEach var="sp" items="${bestSellers}">
+                        <a href="${pageContext.request.contextPath}/products?action=detail&id=${sp.id}"
+                           class="list-group-item list-group-item-action py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="flex-shrink-0">
+                                    <img src="${pageContext.request.contextPath}/${fn:escapeXml(sp.imagePath)}"
+                                         alt="${fn:escapeXml(sp.name)}"
+                                         class="bestseller-item rounded" loading="lazy">
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="bestseller-box">
-                        <h3 style="margin-bottom:14px;">🔥 Sản phẩm bán chạy</h3>
-                        <c:forEach var="sp" items="${bestSellers}">
-                            <div class="bestseller-item" style="display:flex;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">
-                                <a href="${pageContext.request.contextPath}/products?action=detail&id=${sp.id}">
-                                    <img src="${pageContext.request.contextPath}/${sp.imagePath}" alt="${sp.name}" style="width:80px;height:80px;object-fit:cover;border-radius:8px">
-                                </a>
-                                <div class="bestseller-info" style="display:flex;flex-direction:column;gap:4px;justify-content:center">
-                                    <a href="${pageContext.request.contextPath}/products?action=detail&id=${sp.id}" style="text-decoration:none;color:var(--text-color)">
-                                        <h4 style="font-size:.95rem;margin:0">${sp.name}</h4>
-                                    </a>
-                                    <span class="price" style="color:var(--primary);font-weight:700">${sp.price}₫</span>
+                                <div class="flex-grow-1 min-w-0">
+                                    <h6 class="mb-1 text-truncate small fw-bold">${fn:escapeXml(sp.name)}</h6>
+                                    <div class="text-danger small fw-bold">
+                                        <fmt:formatNumber value="${sp.price}" type="number"/>₫
+                                    </div>
+                                    <small class="text-muted" style="font-size:0.75rem;">Đã bán: ${sp.soldQuantity}</small>
                                 </div>
                             </div>
-                        </c:forEach>
-                    </div>
+                        </a>
+                    </c:forEach>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <c:if test="${not empty debugLog}">
-            <div style="background:#222;color:#fff;padding:12px;border-radius:8px;margin:20px 0;font-family:consolas,monospace">
-                <b>DEBUG:</b><br />${debugLog}
-            </div>
-        </c:if>
+<%@ include file="partials/footer.jsp" %>
+<%@ include file="chat_widget.jsp" %>
 
-        <div id="successPopup" class="success-form" aria-hidden="true">
-            <div class="content-container" role="dialog" aria-modal="true" aria-live="assertive">
-                <svg class="success-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <circle cx="24" cy="24" r="18" stroke-width="2.5" />
-                  <path d="M16 24.5l6 6 10-12" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <div class="success-text">Thêm sản phẩm vào giỏ hàng thành công !</div>
-            </div>
-        </div>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-        <%@ include file="partials/footer.jsp" %>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
-        <%@ include file="chat_widget.jsp" %>
-        <script>
-            /* Banner logic */
-            const slides = document.querySelectorAll('.slide');
-            const thumbs = document.querySelectorAll('.thumb');
-            let currentSlide = 0;
-            function showSlide(i) {
-                slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
-                thumbs.forEach((t, idx) => t.classList.toggle('active', idx === i));
-                currentSlide = i;
-            }
-            document.querySelector('.next').onclick = () => showSlide((currentSlide + 1) % slides.length);
-            document.querySelector('.prev').onclick = () => showSlide((currentSlide - 1 + slides.length) % slides.length);
-            thumbs.forEach((t, i) => t.addEventListener('click', () => showSlide(i)));
-            setInterval(() => document.querySelector('.next').click(), 5000);
+    // =================================================================
+    // [FIX BANNER] Swiper: Khởi tạo thumbs TRƯỚC, main SAU
+    // Cả hai KHÔNG loop → đồng bộ chính xác
+    // =================================================================
 
-            /* Dark / Light */
-            const themeBtn = document.getElementById('themeToggle');
-            function applySavedTheme() {
-                const saved = localStorage.getItem('theme');
-                const dark = saved === 'dark';
-                document.body.classList.toggle('dark', dark);
-                if (themeBtn) themeBtn.textContent = dark ? '🌙 Chế độ tối' : '🌞 Chế độ sáng';
-            }
-            applySavedTheme();
-            if (themeBtn) {
-                themeBtn.addEventListener('click', () => {
-                    document.body.classList.toggle('dark');
-                    const dark = document.body.classList.contains('dark');
-                    localStorage.setItem('theme', dark ? 'dark' : 'light');
-                    themeBtn.textContent = dark ? '🌙 Chế độ tối' : '🌞 Chế độ sáng';
-                });
-            }
+    // 1) Khởi tạo Thumbnail Swiper trước
+    var swiperThumbs = new Swiper("#swiperThumbs", {
+        spaceBetween: 10,
+        slidesPerView: 3,
+        watchSlidesProgress: true,   // BẮT BUỘC để main nhận biết thumb active
+        freeMode: false,
+        loop: false
+    });
 
-            /* Advanced Search toggle */
-            const advBtn = document.getElementById('toggleAdvBtn');
-            const advBody = document.getElementById('advBody');
-            function setAdv(open) {
-                advBody.classList.toggle('open', open);
-                advBtn.setAttribute('aria-expanded', String(open));
-                advBtn.textContent = open ? 'Thu gọn' : 'Mở rộng';
-            }
-            setAdv(localStorage.getItem('adv_open') !== 'false');
-            advBtn.addEventListener('click', () => {
-                const open = !advBody.classList.contains('open');
-                setAdv(open);
-                localStorage.setItem('adv_open', open ? 'true' : 'false');
-            });
-            
-            /* Popup giỏ hàng */
-            const successPopup = document.getElementById('successPopup');
-            let popupTimer = null;
-            // Bật lại reload sau khi đóng popup (mặc định: true)
-            function showSuccessPopup({message='Thêm sản phẩm vào giỏ hàng thành công !',duration=1200,reloadAfter=true,spin=true}={}) {
-                if(!successPopup) return;
-                const textEl = successPopup.querySelector('.success-text');
-                if(textEl) textEl.textContent = message;
-                const icon = successPopup.querySelector('.success-icon');
-                if(icon){
-                    icon.classList.remove('spin-once');
-                    if(spin){ void icon.offsetWidth; icon.classList.add('spin-once'); }
-                }
-                clearTimeout(popupTimer);
-                successPopup.classList.add('active');
-                successPopup.style.display='flex';
-                successPopup.setAttribute('aria-hidden','false');
-                document.body.style.overflow='hidden';
-                popupTimer = setTimeout(()=>closeSuccessPopup(reloadAfter), duration);
-                function onOverlay(e){ if(e.target===successPopup){ cleanup(); closeSuccessPopup(reloadAfter); } }
-                function onEsc(e){ if(e.key==='Escape'){ cleanup(); closeSuccessPopup(reloadAfter); } }
-                function cleanup(){
-                    successPopup.removeEventListener('click',onOverlay);
-                    document.removeEventListener('keydown',onEsc);
-                    clearTimeout(popupTimer);
-                }
-                successPopup.addEventListener('click',onOverlay,{once:true});
-                document.addEventListener('keydown',onEsc,{once:true});
-            }
-            function closeSuccessPopup(reload=false){
-                successPopup.classList.remove('active');
-                successPopup.style.display='none';
-                successPopup.setAttribute('aria-hidden','true');
-                document.body.style.overflow='';
-                if(reload) location.reload();
+    // 2) Khởi tạo Main Swiper sau, truyền instance thumbs vào
+    var swiperMain = new Swiper("#swiperMain", {
+        spaceBetween: 0,
+        effect: "fade",
+        fadeEffect: { crossFade: true },
+        loop: false,
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        speed: 700,
+        navigation: {
+            nextEl: "#swiperMain .swiper-button-next",
+            prevEl: "#swiperMain .swiper-button-prev"
+        },
+        pagination: {
+            el: "#swiperMain .swiper-pagination",
+            clickable: true
+        },
+        thumbs: {
+            swiper: swiperThumbs    // liên kết với instance thumbs
+        }
+    });
+
+    // =================================================================
+    // [FIX SORT] Đổi sortBy → build URL chuẩn và navigate thẳng
+    // Không dùng AJAX (tránh lỗi parse full page)
+    // =================================================================
+    var sortSelect = document.getElementById("sortBy");
+    if (sortSelect) {
+        sortSelect.addEventListener("change", function () {
+            // Lấy URL hiện tại, cập nhật sortBy param
+            var url = new URL(window.location.href);
+            var params = url.searchParams;
+
+            // Đảm bảo action=list
+            params.set("action", "list");
+
+            // Cập nhật sortBy
+            var sortVal = this.value;
+            if (sortVal) {
+                params.set("sortBy", sortVal);
+            } else {
+                params.delete("sortBy");
             }
 
-            /* Add to cart AJAX */
-            document.addEventListener('DOMContentLoaded', () => {
-                document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-                    btn.addEventListener('click', async function (e) {
-                        e.preventDefault();
-                        const id = this.dataset.productId;
-                        if (this.disabled) return;
-                        
-                        const originalText = this.textContent;
-                        this.disabled = true; this.style.opacity = '.7';
+            // Reset về trang 1 khi đổi sort
+            params.set("page", "1");
 
-                        try {
-                            const res = await fetch('${pageContext.request.contextPath}/cart', {
-                                method:'POST',
-                                headers:{'Content-Type':'application/x-www-form-urlencoded','X-Requested-With':'XMLHttpRequest'},
-                                body:new URLSearchParams({action:'add',productId:id,quantity:1})
-                            });
-                            const result = await res.json();
-                            if(result.success){
-                                // Gọi popup và reload lại trang để cart cập nhật
-                                showSuccessPopup({reloadAfter:true,duration:1200,spin:true});
-                                this.textContent='✅ Đã thêm'; this.style.backgroundColor='var(--success)';
-                                setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
-                            }else{
-                                this.textContent='❌ Lỗi';
-                                this.style.backgroundColor='var(--danger)';
-                                setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
-                            }
-                        } catch(err){
-                            console.error(err);
-                            this.textContent='❌ Lỗi mạng'; this.style.backgroundColor='var(--danger)';
-                            setTimeout(()=>{ this.textContent=originalText; this.style.backgroundColor=''; },1500);
-                        } finally {
-                            this.disabled=false;
-                            this.style.opacity='';
-                        }
-                    });
-                });
-            });
-        </script>
-    </body>
+            // Navigate
+            window.location.href = url.toString();
+        });
+    }
+
+    // =================================================================
+    // [FIX PAGINATION] Link pagination là link thường, không AJAX
+    // (vì server trả full page, không trả partial)
+    // Nếu sau này server hỗ trợ partial → chuyển lại AJAX
+    // =================================================================
+    // Pagination links đã là <a href="..."> bình thường → hoạt động luôn.
+    // Không cần JS xử lý thêm.
+
+});
+</script>
+</body>
 </html>
