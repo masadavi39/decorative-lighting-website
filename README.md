@@ -7,7 +7,7 @@
 ### Setup and run
 **Clone project:**
 ```bash
-git clone https://github.com/masadavi39/decorative-lighting-website.git```
+git clone https://github.com/masadavi39/decorative-lighting-website.git```  
 **Libary Configuration:**
 Giải nén tệp 7z trong thư mục **lib** để lấy tệp .jar  
 Vào Netbeans chuột phải vào project chọn mục properties -> categories -> libaries -> add jar/folder bạn vừa giải nén, add tất cả.  
