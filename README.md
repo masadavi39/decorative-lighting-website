@@ -30,3 +30,7 @@ Kiểm tra lại chuỗi kết nối (Connection String) trong code để khớp
 Chuột phải vào Project -> chọn Clean and Build.  
 Chuột phải vào Project -> chọn Run.  
 Trình duyệt sẽ tự động mở tại địa chỉ: <http://localhost:8080/decorative-lighting-website/>  
+
+## Implementation Team
+
+Nguyễn Đức Biên - Trần Trung Anh - Hoàng Ngọc Duy
